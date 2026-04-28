@@ -91,125 +91,13 @@ The repository also releases plotting code used for figure-level analysis. The f
 | Training example | [`ultralytics/train.py`](ultralytics/train.py) | Example entry for the modified training workflow. |
 | COCO test script | [`coco-test.py`](coco-test.py) | COCO-related utility script. |
 | Qualitative visualization | [`visual.py`](visual.py) | Detection visualization script. |
-| Figure plotting | [`ultralytics/plotfig2.py`](ultralytics/plotfig2.py) | Paper-style plotting script. |
-| 3D visualization | [`ultralytics/3d.py`](ultralytics/3d.py) | 3D visualization helper. |
+| Figure plotting | [`plotfig2.py`](plotfig2.py) | Paper-style plotting script. |
+| 3D visualization | [`3d.py`](3d.py) | 3D visualization helper. |
 | Implementation notes | [`FAIR_COMPARISON_IMPLEMENTATION.md`](FAIR_COMPARISON_IMPLEMENTATION.md) | Detailed change notes for the fair-comparison workflow. |
 
 ## Fair-Comparison Implementation
 
-This section summarizes the main changes behind the released training protocol.
-
-| Part | Implementation |
-| --- | --- |
-| Training switches | Adds `use_coco_fitness`, `coco_eval_interval`, `coco_only_best`, and `coco_start_epoch`. |
-| COCO JSON control | Generates prediction JSON only on scheduled COCO-eval epochs. |
-| COCO API metric | Calls `pycocotools.COCOeval` during training validation. |
-| Fitness write-back | Uses COCO `mAP50-95(B)` as the training fitness value. |
-| `best.pt` policy | Updates `best.pt` only after a valid COCO evaluation. |
-| Annotation lookup | Searches common custom COCO JSON paths automatically. |
-| Image-id mapping | Reads real `images[].id` from annotation JSON to avoid filename-ID errors. |
-| Optimizer fallback | Replaces unavailable `MuSGD` paths with standard `torch.optim.SGD`. |
-| Released utilities | Includes training, COCO test, visualization, plotting, and 3D scripts. |
-
-### Training Options
-
-```yaml
-use_coco_fitness: False
-coco_eval_interval: 1
-coco_only_best: False
-coco_start_epoch: 0
-```
-
-| Option | Meaning |
-| --- | --- |
-| `use_coco_fitness` | Enable COCO API fitness. |
-| `coco_eval_interval` | COCO-eval epoch interval. |
-| `coco_only_best` | Restrict `best.pt` updates to COCO epochs. |
-| `coco_start_epoch` | Skip early COCO eval to reduce overhead. |
-
-### Core Code Path
-
-The following excerpts are selected from the modified codebase to show how CDP Training Framework is implemented in practice.
-
-**1) Epoch-aware COCO evaluation scheduling (`validator.py`)**
-
-Only selected epochs enable JSON export and COCO API evaluation, which controls overhead while preserving peak tracking.
-
-```python
-eval_interval = getattr(trainer.args, "coco_eval_interval", 1) or 1
-start_epoch = getattr(trainer.args, "coco_start_epoch", 0) or 0
-coco_eval_this_epoch = (
-    ((trainer.epoch + 1) >= start_epoch)
-    and (
-        (eval_interval <= 1)
-        or ((trainer.epoch + 1) % eval_interval == 0)
-        or ((trainer.epoch + 1) == trainer.epochs)
-    )
-)
-self.args.save_json = coco_eval_this_epoch
-```
-
-**2) COCO score write-back as training fitness (`validator.py`)**
-
-When COCO evaluation runs successfully, `mAP50-95(B)` is explicitly written into `fitness`.
-
-```python
-stats = self.eval_json(stats)
-coco_fitness = stats.get("metrics/mAP50-95(B)")
-if coco_fitness is not None:
-    stats["fitness"] = coco_fitness
-    LOGGER.info(f"COCO fitness set to {coco_fitness:.6f}")
-    stats["coco_eval"] = 1.0
-```
-
-**3) `best.pt` update guard for non-COCO epochs (`trainer.py`)**
-
-If CDP mode is enabled and the current epoch did not run COCO eval, the epoch is blocked from replacing the best checkpoint.
-
-```python
-coco_eval = metrics.pop("coco_eval", 0.0)
-fitness = metrics.pop("fitness", -self.loss.detach().cpu().numpy())
-if self.args.use_coco_fitness and self.args.coco_only_best and not coco_eval:
-    fitness = float("-inf")
-
-if (not self.best_fitness or self.best_fitness < fitness) and fitness > float("-inf"):
-    self.best_fitness = fitness
-```
-
-**4) Annotation-based image ID alignment (`detect/val.py`)**
-
-For non-standard COCO-style datasets, filename/stem to `image_id` mapping is built from annotation JSON.
-
-```python
-for img in data.get("images", []):
-    self.img_id_map[Path(img["file_name"]).name] = img["id"]
-    self.img_id_map[Path(img["file_name"]).stem] = img["id"]  # stem fallback
-```
-
-These four parts define the CDP Training Framework stack: scheduled COCO eval, metric-aligned fitness assignment, strict best-checkpoint filtering, and robust COCO ID consistency.
-
-### Training Flow
-
-| Step | Action |
-| --- | --- |
-| 1 | Load COCO-fitness options. |
-| 2 | Check whether the current epoch needs COCO eval. |
-| 3 | Skip JSON export on non-COCO epochs. |
-| 4 | Save `predictions.json` on COCO epochs. |
-| 5 | Locate annotation JSON and build image-id mapping. |
-| 6 | Run `pycocotools.COCOeval`. |
-| 7 | Write COCO `mAP50-95(B)` back to `fitness`. |
-| 8 | Update `best.pt` only when `coco_eval=1`. |
-
-### Compatibility Notes
-
-| Area | Change |
-| --- | --- |
-| Resume training | Allows COCO options to be adjusted after resume. |
-| AMP check | Uses `yolov8n.pt` as a safer default check model. |
-| Model YAML | Adds structure comments without changing model definitions. |
-| Custom COCO data | Supports common annotation JSON export layouts. |
-
+The implementation details are summarized in [`FAIR_COMPARISON_IMPLEMENTATION.md`](FAIR_COMPARISON_IMPLEMENTATION.md). In brief, this release adds COCO API evaluation during training, COCO-based `best.pt` selection, custom COCO JSON lookup, image-id mapping, optimizer fallback, and visualization utilities.
 ## Quick Start
 
 ```bash
