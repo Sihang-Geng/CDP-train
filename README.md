@@ -49,10 +49,8 @@ This repository provides the training, evaluation, and visualization utilities u
 | 🧪 COCO AP | [`ultralytics/models/yolo/detect/val.py`](ultralytics/models/yolo/detect/val.py) | COCOeval, annotation lookup, image-id mapping. |
 | ⚙️ Config | [`ultralytics/cfg/default.yaml`](ultralytics/cfg/default.yaml) | CDP/COCO fitness switches. |
 | 🚀 Training | [`ultralytics/train.py`](ultralytics/train.py) | Example training entry. |
-| 🧾 COCO test | [`coco-test.py`](coco-test.py) | COCO utility script. |
 | 🖼️ Visualization | [`visual.py`](visual.py) | Qualitative detection view. |
-| 📈 Plotting | [`plotfig2.py`](plotfig2.py) | Paper-style figure script. |
-| 🧊 3D view | [`3d.py`](3d.py) | 3D visualization helper. |
+| 📈 Plotting & 🧊 3D view | [`plotfig2.py`](plotfig2.py), [`3d.py`](3d.py) | Paper-style figure script and 3D visualization helper. |
 | 📘 Notes | [`FAIR_COMPARISON_IMPLEMENTATION.md`](FAIR_COMPARISON_IMPLEMENTATION.md) | Full implementation notes. |
 
 ## 🛠️ Fair-Comparison Implementation
