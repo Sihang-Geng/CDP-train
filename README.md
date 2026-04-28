@@ -43,15 +43,6 @@
 
 In short, training-time checkpoint selection follows the evaluation metric used in detection papers.
 
-## 🧩 Core Contributions
-
-| Item | What is added |
-| --- | --- |
-| 🧪 COCO AP fitness | Uses COCO `mAP50-95(B)` for checkpoint selection. |
-| 💾 Peak checkpoint saving | Keeps the best COCO-scored checkpoint during training. |
-| 🗂️ Custom COCO lookup | Finds common annotation JSON layouts automatically. |
-| 🔗 Image-id mapping | Aligns predictions with annotation `images[].id`. |
-
 ## 📦 Released Scope
 
 This is a partial research-code release from an ongoing manuscript. The non-core training, evaluation, and visualization utilities are released first; the complete method details will be supplemented after paper acceptance.
