@@ -22,34 +22,26 @@
 > **Notice**
 > This is an independent research repository built on the [Ultralytics](https://github.com/ultralytics/ultralytics) codebase. It is not an official Ultralytics project. The upstream copyright notices and the GNU AGPL-3.0 license are retained.
 
-## Motivation at a Glance
+## Motivation
 
-> **Research pain point**  
-> Fixed-epoch final-checkpoint comparison can under-report a model that peaks early and overfits later.
+> 🎯 **Goal:** make YOLO research comparisons align with the COCO AP used in papers, instead of relying only on the last fixed-epoch checkpoint.
 
-In mainstream detection research, most papers align final comparison with **COCO AP**. However, in many practical training pipelines based on the upstream repository, model selection is still driven by default in-training metrics and fixed-length training.
-
-In our experiments, the default in-training `mAP` trace is often numerically higher than COCO API AP, but this higher value does **not** guarantee higher COCO AP. More importantly, AP degradation commonly appears earlier than the default `mAP` convergence signal. As a result, if all models are forced to the same final epoch and evaluated only once at the end, early-converging models are more likely to be measured after overfitting, while other models may still be near peak.
-
-This creates a real fairness problem in ablation and cross-model benchmarking: reported differences can be mixed with convergence timing effects, not only method quality. For COCO-style reporting, checkpoint selection must be aligned with COCO AP itself.
-
-| Research setting | Fixed final-epoch protocol | CDP Training Framework |
+| Icon | Problem in common training flows | Why it matters |
 | --- | --- | --- |
-| Checkpoint selection | Last epoch only | Best COCO epoch over training |
-| Convergence mismatch | Early-converging models can be penalized | Different convergence speeds are handled fairly |
-| Overfitting impact | Late overfitting can dominate the final score | Peak checkpoint is retained before degradation |
-| Metric alignment | Selection metric may not match paper metric | Selection directly aligned with COCO `mAP50-95(B)` |
-| Comparison quality | Model quality mixed with timing effects | Closer to model-wise peak capability |
+| 📏 | In-training `mAP` and COCO API AP are not always consistent. | A higher default `mAP` does not necessarily mean a higher paper-reported AP. |
+| ⏱️ | Different models reach their AP peak at different epochs. | Early-converging models may overfit before the final checkpoint is evaluated. |
+| ⚖️ | Fixed-epoch comparison mixes model quality with convergence timing. | Ablation results can become less fair and less convincing. |
 
-| CDP core rule | Practical setup in this release |
+**CDP Training Framework** addresses this by running COCO evaluation during training and retaining the checkpoint with the best COCO score.
+
+| ✅ Released capability | What it does |
 | --- | --- |
-| Evaluate COCO AP periodically during training and keep the best-scoring checkpoint | COCO API evaluation every `5` epochs in paper-style experiments |
+| COCO AP checkpoint selection | Uses COCO `mAP50-95(B)` as the checkpoint fitness signal. |
+| Periodic COCO evaluation | Runs COCO API evaluation every `N` epochs, e.g. every `5` epochs in our experiments. |
+| Strict best-checkpoint update | Prevents non-COCO-evaluated epochs from replacing `best.pt`. |
+| COCO image-id alignment | Maps prediction `image_id` from annotation JSON for custom COCO-style datasets. |
 
-**Summary**
-
-- Mainstream papers report COCO AP, but default fixed-epoch training flows can select checkpoints using signals that are not strictly AP-aligned.
-- Default in-training `mAP` being higher does not imply AP superiority; AP can decline earlier than `mAP` convergence and hide overfitting if only final checkpoints are compared.
-- CDP Training Framework solves this by periodic COCO API evaluation and best-AP checkpoint selection, making research comparison more convincing and method attribution more reliable.
+In short, this release keeps the training protocol closer to the evaluation protocol used in detection papers.
 
 ## Qualitative Preview
 
