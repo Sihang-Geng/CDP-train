@@ -34,7 +34,7 @@
 | Best checkpoint guard | Blocks non-COCO epochs from replacing `best.pt`. |
 | COCO image-id mapping | Aligns prediction `image_id` with annotation JSON. |
 
-In short, training-time checkpoint selection follows the evaluation metric used in detection papers.
+In short, we adjusted the checkpoint selection logic in Ultralytics to align it with the AP-based metrics commonly used in detection papers, thereby supporting fairer model comparisons.
 
 ## 📦 Released Scope
 
