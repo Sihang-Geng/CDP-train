@@ -10,13 +10,6 @@
   <img alt="Release" src="https://img.shields.io/badge/release-partial%20research%20code-orange">
 </p>
 
-<p>
-  <b>Fair comparison framework</b> |
-  <b>COCO AP during training</b> |
-  <b>custom COCO JSON support</b> |
-  <b>paper-style visualization scripts</b>
-</p>
-
 </div>
 
 > **Notice**
@@ -45,16 +38,7 @@ In short, training-time checkpoint selection follows the evaluation metric used 
 
 ## 📦 Released Scope
 
-This is a partial research-code release from an ongoing manuscript. The non-core training, evaluation, and visualization utilities are released first; the complete method details will be supplemented after paper acceptance.
-
-| Status | Component |
-| --- | --- |
-| ✅ Released | COCO-driven checkpoint selection |
-| ✅ Released | Training-time COCO API evaluation |
-| ✅ Released | Custom COCO annotation lookup |
-| ✅ Released | Annotation-based image-id mapping |
-| ✅ Released | Visualization and plotting scripts |
-| 🔒 Not released | Full unpublished method |
+This repository provides the training, evaluation, and visualization utilities used in the current research codebase.
 
 ## 🧭 Feature Map
 
