@@ -74,7 +74,7 @@ model = YOLO("/root/ultralytics/ultralytics/cfg/models/v8/yolov8s.yaml")
 
 results = model.train(
     data="/root/ultralytics/ultralytics/cfg/datasets/RUOD/RUOD_YOLO/data.yaml",
-    epochs=250,
+    epochs=300,
     imgsz=640,
     seed=0,
     deterministic=True,
