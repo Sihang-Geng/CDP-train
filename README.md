@@ -3,7 +3,7 @@
 # CDP Training Framework
 
 <p>
-  <a href="https://github.com/Sihang-Geng/CDP-Training-Framework/blob/main/LICENSE"><img alt="License" src="https://img.shields.io/badge/license-AGPL--3.0-blue"></a>
+  <a href="https://github.com/Sihang-Geng/CDP-Train-Independent/blob/main/LICENSE"><img alt="License" src="https://img.shields.io/badge/license-AGPL--3.0-blue"></a>
   <img alt="Python" src="https://img.shields.io/badge/python-3.8%2B-3776AB?logo=python&logoColor=white">
   <img alt="Base" src="https://img.shields.io/badge/base-Ultralytics%20YOLO-111111">
   <img alt="Metric" src="https://img.shields.io/badge/metric-COCO%20AP%20aligned-2E7D32">
@@ -20,7 +20,7 @@
 </div>
 
 > **Notice**
-> This repository is a personal modified fork of [Ultralytics](https://github.com/ultralytics/ultralytics), not an official Ultralytics repository. The upstream copyright notices and the GNU AGPL-3.0 license are retained.
+> This is an independent research repository built on the [Ultralytics](https://github.com/ultralytics/ultralytics) codebase. It is not an official Ultralytics project. The upstream copyright notices and the GNU AGPL-3.0 license are retained.
 
 ## Motivation at a Glance
 
