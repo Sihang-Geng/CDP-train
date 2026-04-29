@@ -82,6 +82,28 @@ pip install pycocotools
 
 Install the PyTorch version that matches your CUDA environment if it is not already available.
 
+## Dataset
+
+This project uses the RUOD dataset: [RUOD on Baidu AI Studio](https://aistudio.baidu.com/datasetdetail/216919).
+
+### Data Preparation
+
+Keep your RUOD files in a COCO-style structure and point your YAML to the local paths, for example:
+
+```text
+RUOD/
+├─ images/
+│  ├─ train/
+│  ├─ val/
+│  └─ test/
+└─ annotations/
+   ├─ instances_train.json
+   ├─ instances_val.json
+   └─ instances_test.json
+```
+
+Use your dataset YAML to map `train`, `val`, and `test` to local paths.
+
 ```bash
 python ultralytics/train.py
 ```
