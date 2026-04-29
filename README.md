@@ -15,7 +15,7 @@
 > **Notice**
 > Independent research code built on [Ultralytics](https://github.com/ultralytics/ultralytics). Upstream copyright notices and the GNU AGPL-3.0 license are retained.
 
-## 🎯 Motivation
+## 🎯 COCO-Aligned Evaluation Protocol
 
 > 🎯 **Goal:** reduce unfair comparison caused by fixed-epoch training in detection experiments.
 
