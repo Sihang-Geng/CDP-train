@@ -42,21 +42,21 @@ Detailed changes are in [`FAIR_COMPARISON_IMPLEMENTATION.md`](FAIR_COMPARISON_IM
 
 ## 🚀 Installation
 
-### 1. Clone the repository
+### 🔁 1. Clone the repository
 
 ```bash
 git clone https://github.com/Sihang-Geng/CDP-Train-Independent.git
 cd CDP-Train-Independent
 ```
 
-### 2. Create the environment
+### 🧪 2. Create the environment
 
 ```bash
 conda create -n CDP python=3.10 -y
 conda activate CDP
 ```
 
-### 3. Install dependencies
+### 📦 3. Install dependencies
 
 ```bash
 pip install -e .
@@ -65,11 +65,11 @@ pip install pycocotools
 
 Install the PyTorch version that matches your CUDA environment if it is not already available.
 
-## Dataset
+## 🗂️ Dataset
 
 This project uses the RUOD dataset: [RUOD on Baidu AI Studio](https://aistudio.baidu.com/datasetdetail/216919).
 
-### Data Preparation
+### 🧰 Data Preparation
 
 Keep your RUOD files in a COCO-style structure and point your YAML to the local paths, for example:
 
