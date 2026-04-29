@@ -151,7 +151,7 @@ This avoids AP mismatch when filenames are not numeric COCO IDs.
 The released visualization script supports qualitative inspection of detection outputs.
 
 <p align="center">
-  <img src="ultralytics/example1.jpg" alt="Qualitative visualization example" width="92%">
+  <img src="ultralytics/example1.png" alt="Qualitative visualization example" width="92%">
 </p>
 
 <p align="center">
